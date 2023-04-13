@@ -1,12 +1,12 @@
 var timeout = require('connect-timeout')
 const morgan = require('morgan')
-const passport = require('passport')
+
 const cors = require('cors')
 const express = require('express')
 
 require('dotenv').config()
-require('./server/config/db')
-require('./server/config/passport');
+require('./src/config/db')
+require('./src/config/passport');
 
 const app = express()
 app.use(timeout('5s'))
@@ -16,19 +16,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(haltOnTimedout)
 
-app.get('/auth/google',
-  passport.authenticate('admin_google', {
-    scope: ['email', 'profile']
-  }
-  ));
-  
-app.get('/auth/google/callback',
-  passport.authenticate('admin_google', {
-    successRedirect: '/auth/google/success',
-    failureRedirect: '/auth/google/failure'
-  }));
-
-app.use('/api', require('./server/routes/api'))
+app.use('/auth', require('./src/routes/auth'))
+app.use('/api', require('./src/routes/api'))
 
 function haltOnTimedout(req, res, next) {
   if (!req.timedout) next()

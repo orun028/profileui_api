@@ -1,5 +1,5 @@
 const jwt = require('express-jwt');
-const privateKey = process.env.APP_SECRET
+const privateKey = process.env.SECRET
 
 function fromHeaderOrQuerystring(req) {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {

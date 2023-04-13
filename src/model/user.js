@@ -1,25 +1,14 @@
 const mongoose = require('mongoose')
 const bcrypt = require("bcryptjs")
 const jwt = require('jsonwebtoken')
-const Role = require('./role')
-const Admin = require('./admin')
 
 const user = new mongoose.Schema({
     name: { type: String, require: true },
     email: { type: String, lowercase: true, required: [true, "email is required"], match: [/\S+@\S+\.\S+/, 'email is invalid'], index: { unique: true }, maxlength: 20 },
     password: { type: String, default: null, maxlength: 30 },
     phone: { type: String, required: false, index: { unique: true, sparse: true }, maxlength: 10 },
-    blocked: { type: Boolean, default: false },
-    confirmed: { type: Boolean, default: false },
-    address: [{
-        road: String,
-        district: String,
-        city: String
-    }],
-    addressActive: { type: mongoose.Schema.Types.ObjectId },
-    role: { type: mongoose.Schema.Types.ObjectId, ref: Role },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: Admin },
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: Admin }
+    isconfirmed: { type: Boolean, default: false },
+    address: { type: String },
 }, { timestamps: true });
 
 

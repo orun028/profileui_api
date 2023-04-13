@@ -23,13 +23,14 @@
     "node": "16.13.0"
   },
   "scripts": {
-    "dev": "nodemon server/app.js",
-    "start": "node server/app.js",
-    "lint": "eslint server/app.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "lint": "eslint index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.38.0"
+    "eslint": "^8.38.0",
+    "nodemon": "^2.0.22"
   }
 }

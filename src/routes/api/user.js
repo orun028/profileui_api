@@ -19,7 +19,7 @@ router.post('/',  validator.create(), validatorErr, user_controler.create)
 
 router.get('/count', user_controler.countDocument)
 
-router.get("/profile/:username", auth.optional, user_controler.profile)
+router.get("/profile/:username", auth.withOptional, user_controler.profile)
 
 router.post('/login', validator.login(), validatorErr, user_controler.login)
 
