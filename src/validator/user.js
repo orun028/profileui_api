@@ -1,11 +1,11 @@
-const { check } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
-function create(){
+function create() {
   return [
     check('email', 'Please enter your email').not().isEmpty(),
     check('email', 'Invalid email').isEmail(),
-    check('name', 'Please enter your name').not().isEmpty(),
-    check('name', 'Name more than 6 degits').isLength({ min: 6, max: 20 }),
+    check('fullname', 'Please enter your name').not().isEmpty(),
+    check('fullname', 'Name more than 6 degits').isLength({ min: 6, max: 20 }),
     check('password', 'Please enter your password').not().isEmpty(),
     check('password', 'Password more than 6 degits').isLength({ min: 6, max: 30 }),
     check('phone', 'Please enter your phone').not().isEmpty(),
@@ -13,7 +13,7 @@ function create(){
   ];
 }
 
-function createGuest(){
+function createGuest() {
   return [
     check('email', 'Please enter your email').not().isEmpty(),
     check('email', 'Invalid email').isEmail(),
@@ -22,14 +22,14 @@ function createGuest(){
   ];
 }
 
-function login(){
+function login() {
   return [
     check('username', 'Please enter your username').not().isEmpty(),
     check('password', 'Please enter your password').not().isEmpty()
   ];
 }
 
-function update(){
+function update() {
   return [
     check('email', 'Please enter your email').not().isEmpty(),
     check('email', 'Invalid email').isEmail(),
@@ -40,7 +40,7 @@ function update(){
   ];
 }
 
-function recoverPassword(){
+function recoverPassword() {
   return [
     check('email', 'Please enter your email').not().isEmpty(),
     check('email', 'Invalid email').isEmail(),
@@ -49,12 +49,24 @@ function recoverPassword(){
   ];
 }
 
+
+function validatorErr(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(422).json({ err: errors.array() })
+    return;
+  }
+  next()
+}
+
+
 const checks = {
   recoverPassword,
   update,
   login,
   createGuest,
-  create
+  create,
+  validatorErr
 }
 
 module.exports = checks

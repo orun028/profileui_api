@@ -11,13 +11,13 @@ function fromHeaderOrQuerystring(req) {
 }
 
 const auth = {
-    withCredentials: jwt({
+    required: jwt({
         secret: privateKey,
         algorithms: ['HS256'],
         requestProperty: 'auth',
         getToken: fromHeaderOrQuerystring
     }),
-    withOptional: jwt({
+    optional: jwt({
         secret: privateKey,
         algorithms: ['HS256'],
         credentialsRequired: false,

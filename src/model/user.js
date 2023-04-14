@@ -3,33 +3,54 @@ const bcrypt = require("bcryptjs")
 const jwt = require('jsonwebtoken')
 
 const user = new mongoose.Schema({
-    name: { type: String, require: true },
-    email: { type: String, lowercase: true, required: [true, "email is required"], match: [/\S+@\S+\.\S+/, 'email is invalid'], index: { unique: true }, maxlength: 20 },
-    password: { type: String, default: null, maxlength: 30 },
-    phone: { type: String, required: false, index: { unique: true, sparse: true }, maxlength: 10 },
-    isconfirmed: { type: Boolean, default: false },
+    fullname: {
+        type: String,
+        required: [true, "can't be blank"],
+        match: [/^[a-zA-Z0-9]+$/, "is invalid"],
+    },
+    email: {
+        type: String,
+        lowercase: true,
+        required: [true, "can't be blank"],
+        match: [/\S+@\S+\.\S+/, "is invalid"],
+        index: true
+    },
+    username: {
+        type: String,
+        lowercase: true,
+        required: [true, "can't be blank"],
+        match: [/^[a-zA-Z0-9]+$/, "is invalid"],
+        index: true
+    },
+    password: {
+        type: String,
+        default: null,
+        maxlength: 30
+    },
+    phone: {
+        type: String,
+        maxlength: 10,
+        default: null,
+    },
     address: { type: String },
+    isconfirmed: { type: Boolean, default: false },
+    photourl: { type: String },
+    googleid: { type: String, default: null },
 }, { timestamps: true });
 
-
-user.pre('save', async function (next) {
-    if(await this.address[0]){
-        this.addressActive = this.address[0]._id
-    }
-    next();
-});
+user.index({ phone: 1 }, {
+    name: 'phone_1_unique',
+    partialFilterExpression: {
+        $and: [
+            { phone: { $type: 'string' } },
+            { state: { $eq: 0 } }
+        ]
+    },
+    unique: true
+})
 
 user.pre('save' || 'findByIdAndUpdate', async function (next) {
     if (this.password) this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
-    if (this.name && this.email && !this.password && !this.confirmed) {
-        await Role.findOne({ code: 'role_user_public' })
-            .then(e => this.role = e._id)
-            .catch(next)
-    } else if(this.name && this.email ) {
-        await Role.findOne({ code: 'role_user_auth' })
-            .then(e => this.role = e._id)
-            .catch(next)
-    }
     next();
 });
 
@@ -46,22 +67,27 @@ user.method({
             id: this._id,
             name: this.name,
             exp: parseInt(exp.getTime() / 1000),
-        }, process.env.APP_SECRET || "ruxx28");
+        }, process.env.SECRET);
     },
     toAuthJSON: function () {
         return {
             id: this._id,
-            name: this.name,
+            fullname: this.fullname,
+            username: this.username,
+            email: this.email,
+            photourl: this.photourl,
             token: this.generateJWT()
         }
     },
-    toProfileJSONFor: function (user) {
+    toProfileJSONFor: function () {
         return {
-            name: this.name,
-            image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-            following: false
+            id: this._id,
+            fullname: this.fullname,
+            username: this.username,
+            email: this.email,
+            photourl: this.photourl,
         };
     }
 })
 
-module.exports = mongoose.model('user', user);
+module.exports = mongoose.model('users', user);
