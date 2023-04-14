@@ -1,6 +1,7 @@
 const router = require('express').Router();
+const auth = require('./../../utils/auth')
 
-router.use('/users', require('./user'));
+router.use('/users', auth.required, require('./user'));
 
 router.use(function (err, req, res, next) {
     if (err.name === 'MongoServerError' && err.code === 11000) {

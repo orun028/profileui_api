@@ -22,16 +22,15 @@ exports.loginGoogle = (req, res, next) => {
 
 exports.loginGoogleCallback = (req, res, next) => {
   passport.authenticate('google', {
-    successRedirect: '/auth/google/success',
-    failureRedirect: '/auth/google/failure'
+    failureRedirect: '/',
+    successRedirect: '/auth'
   })(req, res, next);
 }
 
 exports.logout = (req, res, next) => {
+  res.status(205).json({})
   req.session.destroy(function (err) {
-    console.log('Destroyed session')
     if (err) { return next(err); }
-    res.status(205).json({})
   })
 }
 
@@ -76,7 +75,12 @@ passport.use('google', new GoogleStrategy({
           googleid: profile.id,
           fullname: profile.displayName,
           email: profile.emails[0].value,
-        }).save().then(user => done(null, user))
+          username: profile.emails[0].value,
+          photourl: profile.photos[0].value,
+        })
+        .save()
+        .then(user => done(null, user))
+        .catch(done)
       } else {
         done(null, user);
       }

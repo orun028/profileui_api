@@ -6,21 +6,17 @@ const user = new mongoose.Schema({
     fullname: {
         type: String,
         required: [true, "can't be blank"],
-        match: [/^[a-zA-Z0-9]+$/, "is invalid"],
     },
     email: {
         type: String,
         lowercase: true,
         required: [true, "can't be blank"],
         match: [/\S+@\S+\.\S+/, "is invalid"],
-        index: true
+        index: { unique: true }
     },
     username: {
         type: String,
-        lowercase: true,
-        required: [true, "can't be blank"],
-        match: [/^[a-zA-Z0-9]+$/, "is invalid"],
-        index: true
+        default: null,
     },
     password: {
         type: String,
@@ -37,17 +33,6 @@ const user = new mongoose.Schema({
     photourl: { type: String },
     googleid: { type: String, default: null },
 }, { timestamps: true });
-
-user.index({ phone: 1 }, {
-    name: 'phone_1_unique',
-    partialFilterExpression: {
-        $and: [
-            { phone: { $type: 'string' } },
-            { state: { $eq: 0 } }
-        ]
-    },
-    unique: true
-})
 
 user.pre('save' || 'findByIdAndUpdate', async function (next) {
     if (this.password) this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));

@@ -30,12 +30,12 @@ if (app.get('env') === 'production') {
 }
 
 app.disable('x-powered-by');
-app.use(timeout('5s'))
+// app.use(timeout('5s'))
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(haltOnTimedout)
+// app.use(haltOnTimedout)
 app.use(session(sess))
 app.use(passport.initialize())
 app.use(passport.session())
