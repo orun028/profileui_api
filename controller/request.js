@@ -1,16 +1,15 @@
 const Request = require('../model/request')
-const fs = require('fs')
+// const fs = require('fs')
 
 exports.create = async (req, res, next) => {
     const values = req.body
     try {
-        const filename = Date.now()+'.png'
-        const path = './public/images/'+filename
-        const imgdata = values.image;
-        const base64Data = imgdata.replace(/^data:([A-Za-z-+/]+);base64,/, '');
-        fs.writeFileSync(path, base64Data,  {encoding: 'base64'});
-
-        const request = new Request({...values, image: (process.env.PUBLIC_URL || '')+'/images/'+filename});
+        // const filename = Date.now()+'.png'
+        // const path = './public/images/'+filename
+        // const imgdata = values.image;
+        // const base64Data = imgdata.replace(/^data:([A-Za-z-+/]+);base64,/, '');
+        // fs.writeFileSync(path, base64Data,  {encoding: 'base64'});
+        const request = new Request({...values}); // , image: (process.env.PUBLIC_URL || '')+'/images/'+filename
         const results = await request.save()
         res.status(201).json(results)
     } catch (error) {
