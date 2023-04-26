@@ -36,13 +36,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(session(sess))
 app.use(passport.initialize())
 app.use(passport.session())
-
+app.get('/', (req, res) => {
+  res.json({ 'message':'Hey this is my API running!'})
+})
 app.use('/auth', require('./src/routes/auth'))
 app.use('/api', require('./src/routes/api'))
-
-function haltOnTimedout(req, res, next) {
-  if (!req.timedout) next()
-}
 
 app.listen(PORT, () => {
   console.log(`Api listen port: ${PORT}`)
