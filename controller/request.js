@@ -11,7 +11,7 @@ exports.create = async (req, res, next) => {
         // fs.writeFileSync(path, base64Data,  {encoding: 'base64'});
         const request = new Request({...values}); // , image: (process.env.PUBLIC_URL || '')+'/images/'+filename
         const results = await request.save()
-        res.status(201).json(results)
+        res.json(results)
     } catch (error) {
         next(error)
     }

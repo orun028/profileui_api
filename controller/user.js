@@ -5,7 +5,7 @@ exports.create = (req, res, next) => {
     const user = new User(values)
     user.save()
         .then(v => {
-            res.status(201).json(v.toAuthJSON())
+            res.json(v.toAuthJSON())
         })
         .catch(next)
 }
@@ -23,7 +23,7 @@ exports.delete = (req, res, next) => {
     console.log(req.params.id)
     User.deleteOne({ _id: req.params.id })
         .then(e => {
-            res.status(204).json(e)
+            res.json(e)
         })
         .catch(next)
 }
