@@ -50,3 +50,5 @@ function haltOnTimedout(req, res, next) {
 app.listen(PORT, () => {
   console.log(`Api listen port: ${PORT}`)
 })
+
+module.exports = app;
