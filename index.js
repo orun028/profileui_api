@@ -36,8 +36,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(session(sess))
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(express.static('public'))
+
 app.get('/', (req, res) => {
-  res.json({ 'message':'Hey this is my API running!'})
+  res.send('Hey this is my API running!');
 })
 app.use('/auth', require('./routes/auth'))
 app.use('/api', require('./routes/api'))
