@@ -39,8 +39,8 @@ app.use(passport.session())
 app.get('/', (req, res) => {
   res.json({ 'message':'Hey this is my API running!'})
 })
-app.use('/auth', require('./src/routes/auth'))
-app.use('/api', require('./src/routes/api'))
+app.use('/auth', require('./routes/auth'))
+app.use('/api', require('./routes/api'))
 
 app.listen(PORT, () => {
   console.log(`Api listen port: ${PORT}`)
