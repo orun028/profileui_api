@@ -7,6 +7,6 @@ const request = new mongoose.Schema({
     ssid: String,
     type: String,
     image: { type: String, default: null },
-}, { timeseries: true });
+}, { timestamps: true });
 
 module.exports = mongoose.model('requests', request);
