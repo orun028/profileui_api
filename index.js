@@ -41,8 +41,7 @@ app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.send('Hey this is my API running!');
 })
-app.use('/auth', require('./routes/auth'))
-app.use('/api', require('./routes/api'))
+ app.use('/api', require('./routes/api'))
 
 app.listen(PORT, () => {
   console.log(`Api listen port: ${PORT}`)

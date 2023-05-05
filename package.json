@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.36.4",
     "connect-mongo": "^5.0.0",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
@@ -17,6 +18,8 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.10.5",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "passport": "^0.5.3",
     "passport-google-oauth2": "^0.2.0",
     "passport-local": "^1.0.0"

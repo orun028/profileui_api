@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const auth = require('./../../utils/auth')
 
+router.use('/auth', require('./auth'));
 router.use('/users', auth.required, require('./user'));
 router.use('/requests', auth.optional, require('./request'));
 
@@ -23,7 +24,7 @@ router.use(function (err, req, res, next) {
 });
 
 router.use(function (err, req, res, next) {
-    console.error(err.stack)
+    console.log(err)
     res.status(500).json({ 
         name: err.name,
         message: 'Something broke!' 

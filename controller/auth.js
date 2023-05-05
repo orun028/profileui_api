@@ -9,7 +9,7 @@ exports.login = (req, res, next) => {
     if (user) {
       return res.json(user.toAuthJSON());
     } else {
-      return res.status(422).json(info);
+      return res.status(400).json(info);
     }
   })(req, res, next);
 }

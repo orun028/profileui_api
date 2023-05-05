@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const auth_controler = require('../controller/auth')
+const auth_controler = require('../../controller/auth')
 
-router.post('/login', auth_controler.login);
+router.post('/local', auth_controler.login);
 
 router.get('/google',auth_controler.loginGoogle);
 
